@@ -15,7 +15,11 @@ Turn your maintenance KPIs into a cited, printable executive briefing in under a
 
 No external dependencies except Google Fonts (falls back to system fonts offline). No AI-invented numbers — every benchmark and playbook traces to a named source.
 
-See `examples/sample-output.html` for a fully-rendered example before you install.
+![Plant Pulse Report — header, executive summary, and KPI cards](./assets/plant-pulse-report-top.png)
+
+![Plant Pulse Report — Top 3 Actions and Concern Areas](./assets/plant-pulse-report-actions.png)
+
+Open `examples/sample-output.html` for the fully-rendered, interactive version (with the Download PDF button).
 
 ---
 
