@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build output / releases
+dist/
+*.zip
+
+# Logs
+*.log
+
+# Env / local config
+.env
+.env.local
+*.local

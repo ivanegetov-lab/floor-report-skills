@@ -1,0 +1,5 @@
+kpi,current,target,prior_period,t-5,t-4,t-3,t-2,t-1
+pm_compliance,82,90,85,92,91,89,88,85
+schedule_compliance,78,85,82,85,84,84,82,82
+reactive_work,28,20,24,18,19,22,24,24
+backlog_crew_weeks,6.8,5,6.2,4.8,5.1,5.5,5.9,6.2

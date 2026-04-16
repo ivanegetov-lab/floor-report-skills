@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Demo Manufacturing · Plant Pulse · Week 16, 2026</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F8FAFC;
+  --card:#FFFFFF;
+  --ink:#0F172A;
+  --ink-2:#1E293B;
+  --muted:#64748B;
+  --muted-2:#94A3B8;
+  --border:#E2E8F0;
+  --rule:#CBD5E1;
+  --ok:#059669;
+  --warn:#D97706;
+  --risk:#DC2626;
+  --signal:#2563EB;
+  --surface-dark:#0F172A;
+  --surface-dark-text:#E2E8F0;
+  --accent-band:#FEF3C7;
+  --accent-band-ink:#78350F;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.mono{font-family:'JetBrains Mono','SF Mono',Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.page{max-width:960px;margin:0 auto;padding:48px 40px 64px}
+
+/* Header */
+.report-header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;
+  padding-bottom:20px;border-bottom:1px solid var(--rule);margin-bottom:36px}
+.report-header .brand-mark{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.report-header .brand-dot{width:10px;height:10px;border-radius:2px;background:var(--ink);
+  box-shadow:0 0 0 3px rgba(15,23,42,.1)}
+.report-header .eyebrow{font-size:11px;font-weight:700;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--muted)}
+.report-header h1{margin:0;font-size:32px;line-height:1.15;font-weight:800;letter-spacing:-.02em}
+.report-header .meta{font-size:13px;color:var(--muted);text-align:right}
+.report-header .meta .period{font-weight:600;color:var(--ink-2);margin-bottom:2px}
+
+/* Section scaffolding */
+section{margin-bottom:36px}
+.section-title{font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 14px;display:flex;align-items:center;gap:10px}
+.section-title::before{content:"";width:18px;height:1px;background:var(--rule)}
+
+/* Exec summary */
+.exec{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:28px 32px;box-shadow:0 1px 0 rgba(15,23,42,.03)}
+.exec .headline{font-size:22px;font-weight:700;line-height:1.3;letter-spacing:-.01em;
+  margin:0 0 14px}
+.exec .lead{font-size:15.5px;color:var(--ink-2);margin:0;max-width:62ch}
+.forward-signal{margin-top:22px;background:var(--surface-dark);color:var(--surface-dark-text);
+  border-radius:10px;padding:18px 22px;display:flex;gap:18px;align-items:flex-start}
+.forward-signal .fs-label{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
+  color:#FCD34D;padding:4px 8px;border:1px solid rgba(252,211,77,.35);border-radius:3px;
+  white-space:nowrap;margin-top:2px}
+.forward-signal p{margin:0;font-size:14.5px;line-height:1.55}
+.forward-signal .cite{display:block;margin-top:6px;font-size:11.5px;color:var(--muted-2);font-style:italic}
+
+/* KPI grid */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:20px 22px;position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--muted)}
+.kpi.status-ok::before{background:var(--ok)}
+.kpi.status-warn::before{background:var(--warn)}
+.kpi.status-risk::before{background:var(--risk)}
+.kpi-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.kpi-name{font-size:13px;font-weight:600;color:var(--ink-2);letter-spacing:.01em}
+.kpi-name .note{display:block;font-size:11px;color:var(--muted);font-weight:500;margin-top:2px}
+.kpi-badge{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:3px 8px;border-radius:999px;white-space:nowrap}
+.kpi-badge.ok{background:#ECFDF5;color:var(--ok)}
+.kpi-badge.warn{background:#FFFBEB;color:var(--warn)}
+.kpi-badge.risk{background:#FEF2F2;color:var(--risk)}
+.kpi-value-row{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.kpi-value{font-size:42px;font-weight:700;line-height:1;letter-spacing:-.025em;color:var(--ink)}
+.kpi-unit{font-size:16px;color:var(--muted);font-weight:600}
+.kpi-trend{margin-left:auto;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+.trend-up{color:var(--risk)}   /* rising is bad for 'lower-better' metrics */
+.trend-down{color:var(--ok)}
+.kpi-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;
+  margin-top:10px;font-size:12.5px;color:var(--muted)}
+.kpi-meta .target{font-weight:500}
+.kpi-meta .cite{font-size:11px;color:var(--muted-2)}
+.spark{margin-top:12px;width:100%;height:36px;display:block}
+
+/* Actions */
+.actions-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.action{background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:18px 22px;display:grid;grid-template-columns:44px 1fr;gap:18px;align-items:flex-start}
+.action-rank{width:36px;height:36px;border-radius:8px;background:var(--ink);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;font-family:'Inter'}
+.action.priority-1 .action-rank{background:var(--risk)}
+.action.priority-2 .action-rank{background:var(--warn)}
+.action.priority-3 .action-rank{background:var(--ink)}
+.action h3{margin:0 0 6px;font-size:16.5px;font-weight:700;letter-spacing:-.01em}
+.action p{margin:0 0 10px;font-size:14px;color:var(--ink-2)}
+.action-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.tag{font-size:11px;font-weight:600;letter-spacing:.02em;padding:4px 8px;border-radius:4px;
+  background:#F1F5F9;color:var(--ink-2);border:1px solid var(--border)}
+.tag.outcome{background:#ECFDF5;color:var(--ok);border-color:#A7F3D0}
+.tag.source{background:transparent;color:var(--muted);border-color:transparent;padding-left:0}
+
+/* Concerns */
+.concerns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.concern{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;
+  border-left:3px solid var(--muted)}
+.concern.sev-critical{border-left-color:var(--risk)}
+.concern.sev-high{border-left-color:var(--warn)}
+.concern.sev-medium{border-left-color:var(--signal)}
+.concern.sev-positive{border-left-color:var(--ok);background:#F0FDF4}
+.concern .chead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.concern .asset{font-size:14.5px;font-weight:700;color:var(--ink)}
+.concern .sev{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.concern.sev-critical .sev{color:var(--risk)}
+.concern.sev-high .sev{color:var(--warn)}
+.concern.sev-medium .sev{color:var(--signal)}
+.concern.sev-positive .sev{color:var(--ok)}
+.concern p{margin:0 0 8px;font-size:13.5px;color:var(--ink-2)}
+.concern .play{font-size:12px;color:var(--muted)}
+.concern .play strong{color:var(--ink-2)}
+
+/* Backlog */
+.backlog-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 22px}
+.backlog-wrap h3{margin:0 0 4px;font-size:14px;font-weight:700}
+.backlog-wrap .sub{font-size:12px;color:var(--muted);margin-bottom:14px}
+.backlog-table{width:100%;border-collapse:collapse}
+.backlog-table th,.backlog-table td{text-align:center;padding:10px 0}
+.backlog-table th{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);border-bottom:1px solid var(--border)}
+.backlog-table td{font-size:22px;font-weight:700;font-family:'JetBrains Mono',monospace;
+  font-variant-numeric:tabular-nums}
+.backlog-table td.aged{color:var(--risk)}
+
+/* Refs */
+.refs{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 28px}
+.refs ol{margin:0;padding-left:20px;color:var(--ink-2);font-size:13px;line-height:1.7}
+.refs li{margin-bottom:6px}
+.refs a{color:var(--signal);text-decoration:none;border-bottom:1px dotted rgba(37,99,235,.4)}
+
+/* CTA footer (compact) */
+.cta{margin-top:36px;background:var(--surface-dark);color:var(--surface-dark-text);
+  border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;
+  gap:16px;align-items:center;flex-wrap:wrap}
+.cta-body{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;min-width:0}
+.cta .eyebrow-dk{font-size:9.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:#FCD34D;white-space:nowrap}
+.cta h3{margin:0;color:#fff;font-size:13.5px;font-weight:600;letter-spacing:-.005em}
+.cta p{margin:0;color:var(--muted-2);font-size:12px}
+.cta-btn{background:#FCD34D;color:#0F172A;padding:7px 12px;border-radius:6px;font-weight:700;
+  font-size:12px;text-decoration:none;white-space:nowrap;transition:transform .15s ease}
+.cta-btn:hover{transform:translateY(-1px)}
+
+.generator{margin-top:14px;text-align:center;color:var(--muted-2);font-size:10.5px}
+.generator strong{color:var(--muted);font-weight:600}
+
+/* Export toolbar */
+.toolbar{position:fixed;top:18px;right:18px;display:flex;gap:8px;z-index:50}
+.toolbar button{background:var(--ink);color:#fff;border:0;padding:9px 14px;border-radius:7px;
+  font-family:inherit;font-size:12.5px;font-weight:600;letter-spacing:.01em;cursor:pointer;
+  box-shadow:0 2px 8px rgba(15,23,42,.15);transition:transform .15s ease}
+.toolbar button:hover{transform:translateY(-1px)}
+.toolbar button.ghost{background:#fff;color:var(--ink);border:1px solid var(--border)}
+
+/* Print */
+@media print{
+  body{background:#fff}
+  .page{padding:24px}
+  .toolbar{display:none}
+  .cta{background:#F1F5F9;color:var(--ink)}
+  .cta .eyebrow-dk{color:var(--warn)}
+  .cta h3{color:var(--ink)}
+  .cta p{color:var(--ink-2)}
+  .forward-signal{background:#F1F5F9;color:var(--ink)}
+  .forward-signal .fs-label{color:var(--warn);border-color:var(--warn)}
+  .kpi,.action,.concern,.refs,.backlog-wrap,.exec{box-shadow:none;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="toolbar" aria-hidden="true">
+  <button onclick="window.print()" title="Save as PDF via your browser's print dialog">Download PDF</button>
+</div>
+
+<div class="page">
+
+  <header class="report-header">
+    <div>
+      <div class="brand-mark"><span class="brand-dot"></span><span class="eyebrow">Plant Pulse Report</span></div>
+      <h1>Demo Manufacturing</h1>
+    </div>
+    <div class="meta">
+      <div class="period">Week 16, 2026</div>
+      <div>Generated 2026-04-16</div>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">Executive Summary</div>
+    <div class="exec">
+      <p class="headline">Your maintenance program is sliding — the planning system is starting to lose control.</p>
+      <p class="lead">Schedule Compliance fell to 78% while the backlog pushed past 6 crew-weeks, and Reactive Work has risen 10 points in five periods. Line 3's PM deferral and repeat failures on Pump 4B are driving the pattern. Utilities holding at 96% PM compliance shows the underlying capability is there — the gap is execution discipline on the rest of the floor.</p>
+      <div class="forward-signal">
+        <span class="fs-label">Forward Signal</span>
+        <p>
+          At the current 2-point-per-period growth, Reactive Work crosses 35% within three periods — the SMRP threshold where Schedule Compliance starts to cascade (NP-01, Reactive Creep). Expect PM Compliance to slip below 80% and MTBF on bad actors to degrade within 1–2 quarters if the pattern holds.
+          <span class="cite">Basis: Palmer ch. 2; Moore (2017), "reactive trap" feedback loop.</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Key Performance Indicators</div>
+    <div class="kpi-grid">
+
+      <article class="kpi status-warn">
+        <div class="kpi-head">
+          <div class="kpi-name">PM Compliance<span class="note">Frequency-window basis</span></div>
+          <span class="kpi-badge warn">Warning</span>
+        </div>
+        <div class="kpi-value-row">
+          <span class="kpi-value mono">82<span class="kpi-unit">%</span></span>
+          <span class="kpi-trend trend-up mono">▼ 3 pts</span>
+        </div>
+        <svg class="spark" viewBox="0 0 200 36" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#D97706" stroke-width="1.8"
+            points="0,6 40,9 80,15 120,18 160,24 200,30"/>
+          <circle cx="200" cy="30" r="3" fill="#D97706"/>
+        </svg>
+        <div class="kpi-meta"><span class="target">Target 90%</span><span class="cite">SMRP 5.4.3</span></div>
+      </article>
+
+      <article class="kpi status-risk">
+        <div class="kpi-head">
+          <div class="kpi-name">Schedule Compliance<span class="note">Hours basis, weekly</span></div>
+          <span class="kpi-badge risk">At Risk</span>
+        </div>
+        <div class="kpi-value-row">
+          <span class="kpi-value mono">78<span class="kpi-unit">%</span></span>
+          <span class="kpi-trend trend-up mono">▼ 4 pts</span>
+        </div>
+        <svg class="spark" viewBox="0 0 200 36" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#DC2626" stroke-width="1.8"
+            points="0,10 40,12 80,12 120,12 160,18 200,22"/>
+          <circle cx="200" cy="22" r="3" fill="#DC2626"/>
+        </svg>
+        <div class="kpi-meta"><span class="target">Target 85%</span><span class="cite">SMRP 5.4.2</span></div>
+      </article>
+
+      <article class="kpi status-warn">
+        <div class="kpi-head">
+          <div class="kpi-name">Reactive Work<span class="note">% of maintenance hours</span></div>
+          <span class="kpi-badge warn">Warning</span>
+        </div>
+        <div class="kpi-value-row">
+          <span class="kpi-value mono">28<span class="kpi-unit">%</span></span>
+          <span class="kpi-trend trend-up mono">▲ 4 pts</span>
+        </div>
+        <svg class="spark" viewBox="0 0 200 36" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#D97706" stroke-width="1.8"
+            points="0,28 40,26 80,22 120,18 160,18 200,12"/>
+          <circle cx="200" cy="12" r="3" fill="#D97706"/>
+        </svg>
+        <div class="kpi-meta"><span class="target">Target ≤ 20%</span><span class="cite">SMRP 5.4.1</span></div>
+      </article>
+
+      <article class="kpi status-risk">
+        <div class="kpi-head">
+          <div class="kpi-name">Backlog<span class="note">Crew-weeks, SMRP method</span></div>
+          <span class="kpi-badge risk">At Risk</span>
+        </div>
+        <div class="kpi-value-row">
+          <span class="kpi-value mono">6.8<span class="kpi-unit">cw</span></span>
+          <span class="kpi-trend trend-up mono">▲ 0.6</span>
+        </div>
+        <svg class="spark" viewBox="0 0 200 36" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#DC2626" stroke-width="1.8"
+            points="0,28 40,26 80,22 120,18 160,14 200,8"/>
+          <circle cx="200" cy="8" r="3" fill="#DC2626"/>
+        </svg>
+        <div class="kpi-meta"><span class="target">Target 4–6 cw</span><span class="cite">SMRP 5.4.8</span></div>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Top 3 Actions</div>
+    <ol class="actions-list">
+
+      <li class="action priority-1">
+        <div class="action-rank">1</div>
+        <div>
+          <h3>Break the Reactive Spiral</h3>
+          <p>Reactive has risen 10 points over five periods while Schedule Compliance slipped. Freeze non-critical improvement work, Pareto the last 90 days of emergencies, and run rapid FMEA on the top five bad actors — starting with Pump 4B.</p>
+          <div class="action-tags">
+            <span class="tag">PB-RX-001</span>
+            <span class="tag outcome">Expected: –5 to –10 pts in 2–3 months</span>
+            <span class="tag source">Moore (2017) ch. 3–4 · SMRP 5.4.1</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="action priority-2">
+        <div class="action-rank">2</div>
+        <div>
+          <h3>Control Backlog Growth</h3>
+          <p>Backlog is at 6.8 crew-weeks (above the 4–6 band) and aged items (>90d) are 7% of the total and growing. Run a backlog scrub — cancel obsolete and 12-month-plus items, classify the rest by readiness, and gate new non-emergency WOs until the band is restored.</p>
+          <div class="action-tags">
+            <span class="tag">PB-BL-001</span>
+            <span class="tag outcome">Expected: 4–6 cw within 1–2 quarters</span>
+            <span class="tag source">Palmer ch. 3 · SMRP 5.4.8</span>
+          </div>
+        </div>
+      </li>
+
+      <li class="action priority-3">
+        <div class="action-rank">3</div>
+        <div>
+          <h3>Restore PM Compliance on Line 3</h3>
+          <p>14 deferred PMs on Line 3 is the largest single contributor to the compliance drop. Before rescheduling, segment the deferrals by root cause (parts, labor, access, production hold) — blindly forcing them back on schedule without fixing the cause will just re-defer them next period.</p>
+          <div class="action-tags">
+            <span class="tag">PB-PM-001</span>
+            <span class="tag outcome">Expected: +5 to +10 pts in 2 months</span>
+            <span class="tag source">Moubray RCM II · Palmer ch. 9</span>
+          </div>
+        </div>
+      </li>
+
+    </ol>
+  </section>
+
+  <section>
+    <div class="section-title">Concern Areas</div>
+    <div class="concerns">
+
+      <div class="concern sev-critical">
+        <div class="chead"><span class="asset">Pump 4B</span><span class="sev">Critical</span></div>
+        <p>3 bearing failures in 8 weeks. "Replaced bearing" closure codes on all three — no RCA has been completed. This is the canonical repeat-failure pattern; further bearing swaps will not resolve it.</p>
+        <div class="play"><strong>Play:</strong> PB-RF-001 Eliminate Repeat Failures (RCA → FMEA validation → systemic check: lubrication, alignment, operating envelope).</div>
+      </div>
+
+      <div class="concern sev-high">
+        <div class="chead"><span class="asset">Line 3</span><span class="sev">High</span></div>
+        <p>14 PMs deferred this period against a target of 0. Preliminary segmentation points to production hold (6) and parts-waiting (5) as the top causes — a scheduling + MRO problem, not a compliance-discipline problem.</p>
+        <div class="play"><strong>Play:</strong> PB-PM-001 Restore PM Compliance, paired with PB-MRO-001 if the parts-waiting cause confirms.</div>
+      </div>
+
+      <div class="concern sev-medium">
+        <div class="chead"><span class="asset">Electrical Shop</span><span class="sev">Medium</span></div>
+        <p>Backlog grew 22% week-over-week and four WOs have crossed the 90-day threshold. Total hours still small, but the aging curve matches NP-03 (flat backlog hiding aged work) — worth a one-hour scrub now.</p>
+        <div class="play"><strong>Play:</strong> PB-BL-001 Control Backlog Growth, starting with the aged bucket.</div>
+      </div>
+
+      <div class="concern sev-positive">
+        <div class="chead"><span class="asset">Utilities</span><span class="sev">Positive</span></div>
+        <p>PM compliance holding at 96% — a world-class band (SMRP 5.4.3). Whatever the Utilities supervisor is doing on PM scheduling discipline is a pattern worth replicating on Line 3. Consider a shadow-week exchange.</p>
+        <div class="play"><strong>Play:</strong> None required — document the practice for internal benchmarking.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Backlog Aging</div>
+    <div class="backlog-wrap">
+      <h3>Work-order age distribution</h3>
+      <div class="sub">Count by bucket · aged (>90d) items are the real signal, not the total</div>
+      <table class="backlog-table">
+        <thead><tr><th>0–30 days</th><th>31–60 days</th><th>61–90 days</th><th>90+ days</th></tr></thead>
+        <tbody><tr><td>89</td><td>31</td><td>15</td><td class="aged">12</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Sources &amp; Benchmarks</div>
+    <div class="refs">
+      <ol>
+        <li><strong>SMRP Best Practices, 5th Edition</strong> — Society for Maintenance &amp; Reliability Professionals, 2017. <a href="https://smrp.org">smrp.org</a></li>
+        <li><strong>Palmer, Doc.</strong> <em>Maintenance Planning and Scheduling Handbook</em>, 3rd ed. McGraw-Hill, 2019.</li>
+        <li><strong>Moore, Ron.</strong> <em>Making Common Sense Common Practice</em>, 4th ed. Reliabilityweb Press, 2017.</li>
+        <li><strong>Moubray, John.</strong> <em>Reliability-Centered Maintenance (RCM II)</em>, 2nd ed. Industrial Press, 1997.</li>
+        <li><strong>Nowlan &amp; Heap</strong> — United Airlines / DoD, 1978. <a href="https://apps.dtic.mil/sti/citations/ADA066579">Public-domain foundational RCM study</a>.</li>
+        <li><strong>ISO 14224:2016</strong> — Collection and exchange of reliability and maintenance data for equipment.</li>
+        <li><strong>Latino et al.</strong> <em>Root Cause Analysis</em>, 4th ed. CRC Press, 2011.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-body">
+      <span class="eyebrow-dk">The Floor Report</span>
+      <h3>Weekly maintenance playbooks, grounded in SMRP, Palmer, Moore, Moubray.</h3>
+    </div>
+    <a class="cta-btn" href="https://getov.substack.com">Subscribe →</a>
+  </section>
+
+  <div class="generator">
+    Generated with the <strong>Plant Pulse</strong> Claude skill by Ivan Getov · 2026-04-16
+  </div>
+
+</div>
+</body>
+</html>
