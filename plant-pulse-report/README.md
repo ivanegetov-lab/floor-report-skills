@@ -23,24 +23,44 @@ Open `examples/sample-output.html` for the fully-rendered, interactive version (
 
 ---
 
+## Download
+
+**👉 [Download plant-pulse-report-v1.0.0.zip](https://github.com/ivanegetov-lab/floor-report-skills/releases/download/v1.0.0/plant-pulse-report-v1.0.0.zip)** (29 KB) — one click, no git required.
+
+Other ways to get the files:
+
+- **Clone the repo** (if you use git):
+  ```bash
+  git clone https://github.com/ivanegetov-lab/floor-report-skills.git
+  ```
+- **Download the whole repo as a zip** — click the green **Code** button at the [top of the repo](https://github.com/ivanegetov-lab/floor-report-skills) → **Download ZIP**. You'll need to copy just the `plant-pulse-report` folder out of it.
+
+---
+
 ## Install
 
-1. Copy the `plant-pulse-report/` folder into your Claude skills directory:
-   ```
-   ~/.claude/skills/plant-pulse-report/
-   ```
-2. Restart Claude Code (or reload skills in claude.ai).
-3. Invoke with `/plant-pulse-report` in any Claude session.
+Once you have the `plant-pulse-report` folder on your machine, copy it into your Claude skills directory:
 
-On macOS:
+**macOS / Linux:**
 ```bash
+# if you downloaded the zip
+unzip plant-pulse-report-v1.0.0.zip
 cp -r plant-pulse-report ~/.claude/skills/
 ```
 
-On Windows:
+**Windows (PowerShell):**
 ```powershell
+# extract the zip first (right-click → Extract All)
 Copy-Item -Recurse plant-pulse-report $env:USERPROFILE\.claude\skills\
 ```
+
+Then restart Claude Code (or reload skills in claude.ai) and invoke with `/plant-pulse-report` in any Claude session.
+
+**Where is `~/.claude/skills/`?**
+- **macOS / Linux:** `/Users/yourname/.claude/skills/` (hidden folder — show hidden files with `Cmd+Shift+.` in Finder)
+- **Windows:** `C:\Users\yourname\.claude\skills\`
+
+If the `skills` folder doesn't exist yet, create it — Claude will pick up any folder inside.
 
 ---
 
