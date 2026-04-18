@@ -1,6 +1,6 @@
 # Floor Report Skills
 
-Free Claude skills for industrial maintenance and reliability leaders. Grounded in SMRP, Palmer, Moore, Moubray — no AI-slop. Companion library to **[The Floor Report](https://getov.substack.com)** Substack.
+Free Claude skills and field guides for industrial maintenance and reliability leaders. Grounded in SMRP, Palmer, Moore, Moubray — no AI-slop. Companion library to **[The Floor Report](https://getov.substack.com)** Substack.
 
 ---
 
@@ -11,6 +11,12 @@ Free Claude skills for industrial maintenance and reliability leaders. Grounded 
 | [`plant-pulse-report`](./plant-pulse-report) | Turns maintenance KPIs into a cited executive briefing (exec summary, KPI cards with sparklines, top-3 actions, one-click PDF) | v1.0.0 |
 
 More shipping soon.
+
+## Field guides
+
+| Guide | What it is | Download |
+|-------|-----------|----------|
+| [`maintenance-playbook`](./maintenance-playbook) — **Fix the System** | A 25-page field guide to getting work under control in 90 days. Foundations → self-assessment → ten named plays → tools and cadences. | [📥 PDF](https://github.com/ivanegetov-lab/floor-report-skills/releases/download/fix-the-system-v1.0.0/Fix-the-System.pdf) |
 
 ---
 
