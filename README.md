@@ -8,6 +8,7 @@ Free Claude skills and field guides for industrial maintenance and reliability l
 
 | Skill | What it does | Status |
 |-------|--------------|--------|
+| [`plant-pulse`](https://github.com/ivanegetov-lab/plant-pulse) | **New.** Turns a plant's weekly numbers (safety, quality, delivery, cost, maintenance, people), the downtime log and supervisor notes into a one-page brief and a 5-slide deck for the Monday meeting. Lives in its own repo. | v1.0.0 |
 | [`plant-pulse-report`](./plant-pulse-report) | Turns maintenance KPIs into a cited executive briefing (exec summary, KPI cards with sparklines, top-3 actions, one-click PDF) | v1.0.0 |
 
 More shipping soon.
